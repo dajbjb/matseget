@@ -15,6 +15,7 @@ window.renderState1 = function(container, library) {
         container.appendChild(bg);
 
         const wrapper = document.createElement('div');
+        wrapper.className = 'photo-container';
         wrapper.style.position = 'absolute'; wrapper.style.inset = '0';
         wrapper.style.display = 'flex'; wrapper.style.justifyContent = 'center';
         wrapper.style.alignItems = 'center'; wrapper.style.perspective = '1200px';
