@@ -8,7 +8,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
+html, body {
     background-color: var(--dark-bg);
     color: white;
     font-family: 'Assistant', sans-serif;
@@ -163,7 +163,7 @@ body {
     justify-content: center; 
     padding: 10px 20px;
     height: auto;
-    min-height: 12vh;
+    min-height: calc(var(--vh, 1vh) * 12);
 }
 
 /* Metadata UI */
@@ -289,7 +289,7 @@ body {
 /* Mobile & Orientation Specifics */
 @media (max-width: 768px) {
     .main-title { letter-spacing: 2px; }
-    .overlay-bottom { padding: 10px; min-height: 15vh; }
+    .overlay-bottom { padding: 10px; min-height: calc(var(--vh, 1vh) * 15); }
     .player-controls { gap: 10px; }
     .ctrl-btn { padding: 10px 20px; font-size: 0.85rem; }
     .ctrl-btn.main-action { min-width: 120px; }
@@ -302,19 +302,32 @@ body {
         align-items: center;
     }
     .photo-container {
-        /* Correct centering in portrait without breaking all transforms */
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%) !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100vw !important;
+        height: calc(var(--vh, 1vh) * 80) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        transform: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    .photo-container img {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
         max-width: 90vw !important;
-        max-height: 60vh !important;
+        max-height: 40vh !important;
+        margin: 5px 0 !important;
         width: auto !important;
         height: auto !important;
+        object-fit: contain !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.8) !important;
     }
-    .photo-container img.main-img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
+    .photo-container img:only-child {
+        max-height: 70vh !important;
     }
 }
 

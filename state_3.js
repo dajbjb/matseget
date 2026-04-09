@@ -17,6 +17,7 @@ window.renderState3 = function(container, library) {
         container.appendChild(bg);
 
         const wrapper = document.createElement('div');
+        wrapper.className = 'photo-container';
         wrapper.style.position = 'absolute'; wrapper.style.inset = '0';
         wrapper.style.perspective = '2000px';
         container.appendChild(wrapper);

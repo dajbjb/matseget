@@ -15,6 +15,7 @@ window.renderState6 = function(container, library) {
         container.appendChild(bg);
 
         const wrapper = document.createElement('div');
+        wrapper.className = 'photo-container';
         wrapper.style.position = 'absolute'; wrapper.style.inset = '0';
         container.appendChild(wrapper);
 
