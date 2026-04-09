@@ -1,5 +1,5 @@
 /**
- * Cinematic Temporal Engine (CTE) - Final Controller with Outro
+ * Cinematic Temporal Engine (CTE) - Final Controller with iPhone Optimization
  */
 
 const libraries = bakedLibraries;
@@ -17,6 +17,7 @@ let isPaused = false;
 let currentSceneId = 0;
 const audio = document.getElementById('bg-music');
 
+// Playlist Transition
 audio.addEventListener('ended', () => {
     currentSongIndex++;
     if (currentSongIndex < playlist.length) {
@@ -116,6 +117,7 @@ async function playEngine() {
 function showOutro() {
     document.getElementById('movie').classList.remove('active');
     document.getElementById('outro').classList.add('active');
+    
     // Keep audio playing for a bit or fade out
     setTimeout(() => {
         audio.pause();
@@ -138,10 +140,32 @@ function seek(e) {
     }
 }
 
+// Global Viewport Logic
+const updateLayout = () => {
+    const vh = window.innerHeight * 0.01;
+    const vw = window.innerWidth * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.style.setProperty('--vw', `${vw}px`);
+    
+    const canvas = document.getElementById('scene-canvas');
+    if (window.innerHeight > window.innerWidth) {
+        canvas.style.display = 'flex';
+        canvas.style.flexDirection = 'column';
+        canvas.style.justifyContent = 'center';
+        canvas.style.alignItems = 'center';
+    } else {
+        canvas.style.display = 'block';
+    }
+};
+
 function init() {
     filteredLibraries = libraries;
     calculateTimeline();
+    updateLayout();
     
+    window.addEventListener('resize', updateLayout);
+    window.addEventListener('orientationchange', updateLayout);
+
     document.getElementById('play-pause-btn').addEventListener('click', () => {
         isPaused = !isPaused;
         const btn = document.getElementById('play-pause-btn');
@@ -159,14 +183,6 @@ function init() {
     document.getElementById('timeline-track').addEventListener('click', seek);
     document.getElementById('timeline-track').addEventListener('touchstart', seek);
 
-    // Mobile Height Fix
-    const updateVH = () => {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-    window.addEventListener('resize', updateVH);
-    updateVH();
-
     document.getElementById('replay-btn').addEventListener('click', () => {
         document.getElementById('outro').classList.remove('active');
         document.getElementById('movie').classList.add('active');
@@ -179,8 +195,11 @@ function init() {
     });
 
     setTimeout(() => {
-        document.getElementById('loader').style.opacity = '0';
-        setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+        const loader = document.getElementById('loader');
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 1000);
+        }
     }, 500);
 }
 
