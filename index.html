@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAVID & AVIA - The Cinematic AI Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700&family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loader">
+        <div class="loader-content">
+            <h2 class="gold-text-effect">AI Cinematic Director</h2>
+            <div class="progress-container">
+                <div id="loading-progress" class="progress-bar-fill"></div>
+            </div>
+            <p id="loading-status">מנתח צילומי אווירה, בונה סצנות, ויוצר קסם...</p>
+        </div>
+    </div>
+
+    <audio id="bg-music" src="עקיבא ｜ צעדים ｜ Akiva ｜ Tse'adim.mp3" preload="auto"></audio>
+    <div id="app">
+        <!-- Intro Screen -->
+        <section id="intro" class="screen active">
+            <div class="vignette"></div>
+            <div class="content">
+                <div class="cinematic-title">
+                    <h3 class="studio-text">AI CINE-ENGINE מציג</h3>
+                    <h1 class="main-title">DAVID & AVIA</h1>
+                    <div class="divider"></div>
+                    <p class="subtitle">סיפור של אהבה</p>
+                </div>
+                <button id="start-btn" class="gold-btn">הפעל מנוע קולנועי</button>
+            </div>
+        </section>
+
+        <!-- Movie Screen -->
+        <section id="movie" class="screen">
+            <!-- Dynamic Background for immersive color matching -->
+            <div id="ambient-bg"></div>
+            
+            <!-- Canvas for CTE Engine -->
+            <div id="scene-canvas"></div>
+
+            <!-- Transition Layer -->
+            <div id="wash-layer" class="wash-overlay"></div>
+
+            <!-- Date and cinematic overlays -->
+            <div class="cinematic-bars overlay-top"></div>
+            <div class="cinematic-bars overlay-bottom">
+                <div class="timeline-container">
+                    <div id="timeline-track" class="timeline-track">
+                        <div id="timeline-fill" class="timeline-fill"></div>
+                    </div>
+                    <div id="time-display" class="time-counter">00:00 / 00:00</div>
+                </div>
+                <div class="player-controls">
+                    <button id="play-pause-btn" class="ctrl-btn main-action" title="Play/Pause">❚❚ השהה</button>
+                    <button id="fs-btn" class="ctrl-btn" title="Fullscreen">⛶ הגדל</button>
+                </div>
+            </div>
+
+            <!-- Overlay for cinematic grain -->
+            <div class="film-grain"></div>
+        <!-- Outro Screen -->
+        <section id="outro" class="screen">
+            <div class="vignette"></div>
+            <div class="content">
+                <div class="cinematic-title">
+                    <h1 class="main-title" style="letter-spacing: 20px;">THE END</h1>
+                    <div class="divider"></div>
+                    <p class="subtitle">תודה שצפיתם בסיפור שלנו</p>
+                </div>
+                <button id="replay-btn" class="gold-btn" style="margin-top: 50px;">צפו שוב</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Pre-divided Libraries -->
+    <script src="libraries.js"></script>
+    <script src="state_1.js"></script>
+    <script src="state_2.js"></script>
+    <script src="state_3.js"></script>
+    <script src="state_4.js"></script>
+    <script src="state_6.js"></script>
+    <script src="state_7.js"></script>
+    <script src="state_11.js"></script>
+    <!-- The engine script -->
+    <script src="script.js"></script>
+</body>
+</html>
