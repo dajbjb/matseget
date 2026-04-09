@@ -159,6 +159,14 @@ function init() {
     document.getElementById('timeline-track').addEventListener('click', seek);
     document.getElementById('timeline-track').addEventListener('touchstart', seek);
 
+    // Mobile Height Fix
+    const updateVH = () => {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    window.addEventListener('resize', updateVH);
+    updateVH();
+
     document.getElementById('replay-btn').addEventListener('click', () => {
         document.getElementById('outro').classList.remove('active');
         document.getElementById('movie').classList.add('active');
