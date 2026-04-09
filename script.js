@@ -4,12 +4,26 @@
 
 const libraries = bakedLibraries;
 
+const playlist = [
+    "עקיבא ｜ צעדים ｜ Akiva ｜ Tse'adim.mp3",
+    "גל אדם - קחי ת׳לב שלי.mp3"
+];
+let currentSongIndex = 0;
+
 let currentIndex = 0;
 let filteredLibraries = [];
 let currentSceneLayer = null;
 let isPaused = false;
 let currentSceneId = 0;
 const audio = document.getElementById('bg-music');
+
+audio.addEventListener('ended', () => {
+    currentSongIndex++;
+    if (currentSongIndex < playlist.length) {
+        audio.src = playlist[currentSongIndex];
+        audio.play().catch(e => console.error("Audio play failed:", e));
+    }
+});
 
 const STATE_DURATIONS = {
     1: 4500, 2: 5500, 3: 6000, 4: 6500, 6: 7700, 7: 8700, 11: 10200
@@ -149,6 +163,8 @@ function init() {
         document.getElementById('outro').classList.remove('active');
         document.getElementById('movie').classList.add('active');
         currentIndex = 0;
+        currentSongIndex = 0;
+        audio.src = playlist[0];
         audio.currentTime = 0;
         audio.play();
         playEngine();
