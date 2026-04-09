@@ -13,7 +13,7 @@ body {
     color: white;
     font-family: 'Assistant', sans-serif;
     overflow: hidden;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
 }
 
@@ -24,7 +24,7 @@ body {
     display: flex; justify-content: center; align-items: center;
     transition: opacity 1.5s var(--cinematic-easing);
 }
-.loader-content { text-align: center; width: 500px; }
+.loader-content { text-align: center; width: 90%; max-width: 500px; }
 .progress-container { 
     height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0; 
     position: relative; overflow: hidden;
@@ -40,27 +40,28 @@ body {
 .screen {
     position: absolute; width: 100%; height: 100%;
     opacity: 0; visibility: hidden; transition: opacity 2s ease;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
 .screen.active { opacity: 1; visibility: visible; }
 
 /* Cinematic Intro */
 #intro { 
     background: radial-gradient(circle at center, #111 0%, #000 100%); 
-    display: flex; justify-content: center; align-items: center; 
 }
 .vignette { 
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
     box-shadow: inset 0 0 250px rgba(0,0,0,0.95); pointer-events: none; z-index: 2;
 }
-.cinematic-title { text-align: center; margin-bottom: 50px; z-index: 5; position: relative; }
+.cinematic-title { text-align: center; margin-bottom: 50px; z-index: 5; position: relative; width: 95%; max-width: 800px; }
 .studio-text { font-size: 0.8rem; letter-spacing: 8px; color: var(--gold); margin-bottom: 20px; text-transform: uppercase; font-family: 'Cinzel', serif; opacity: 0.8; }
 .main-title { 
-    font-family: 'Playfair Display', serif; font-size: 6rem; color: white; 
+    font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 10vw, 6rem); color: white; 
     font-weight: 700; font-style: italic; margin: 10px 0; letter-spacing: 2px; 
     text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    word-break: break-word;
 }
-.divider { width: 1px; height: 60px; background: linear-gradient(to bottom, transparent, var(--gold), transparent); margin: 25px auto; }
-.subtitle { font-size: 1rem; letter-spacing: 4px; color: #aaa; text-transform: uppercase; }
+.divider { width: 1px; height: clamp(30px, 8vh, 60px); background: linear-gradient(to bottom, transparent, var(--gold), transparent); margin: 25px auto; }
+.subtitle { font-size: clamp(0.8rem, 3vw, 1.2rem); letter-spacing: 4px; color: #aaa; text-transform: uppercase; }
 .gold-btn { 
     background: rgba(0,0,0,0.5); border: 1px solid rgba(229, 193, 88, 0.3); 
     color: var(--gold); padding: 18px 50px; font-size: 0.9rem; text-transform: uppercase; 
@@ -73,7 +74,7 @@ body {
 }
 
 /* --- AI ENGINE CINEMATIC CANVAS --- */
-#movie { background: #000; perspective: 1500px; }
+#movie { background: #000; perspective: 1500px; display: block; }
 
 #ambient-bg {
     position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
@@ -91,11 +92,9 @@ body {
 /* Image Elements Baseline */
 .photo-container {
     position: absolute;
-    /* transition: transform 0.8s var(--cinematic-easing), opacity 0.5s ease; */ /* Handled by JS for zero latency */
     overflow: hidden;
-    background: #000; /* Collision In-fill base */
+    background: #000; 
     box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-    opacity: 0;
 }
 
 .photo-container img.main-img {
@@ -109,35 +108,20 @@ body {
     z-index: 1; pointer-events: none;
 }
 
-/* =======================================
-   10 STYLIZATION EFFECTS VIA CSS
-   ======================================= */
-
-/* 1. Volumetric Lighting */
+/* Stylization Effects */
 .fx-volumetric::before {
     content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: radial-gradient(circle at 50% -20%, rgba(255,255,255,0.15) 0%, transparent 60%);
     pointer-events: none; z-index: 3; mix-blend-mode: screen;
 }
-
-/* 2. Depth of Field Shifting */
 .fx-dof-focus { transition: filter 2s ease; filter: blur(0px); }
 .fx-dof-blur { transition: filter 2s ease; filter: blur(12px) brightness(0.6); }
-
-/* 3. Chromatic Aberration */
 .fx-chromatic {
-    /* Using box-shadow for container, or pseudo elements for image. Best done on container */
     box-shadow: 4px 0 15px rgba(255, 0, 0, 0.4), -4px 0 15px rgba(0, 255, 255, 0.4), 0 20px 60px rgba(0,0,0,0.8);
 }
-
-/* 4. Film Grain (Added globally via .film-grain overlay) */
-
-/* 5. Edge Bloom */
 .fx-bloom {
     box-shadow: 0 0 50px rgba(255,255,255,0.4), 0 20px 60px rgba(0,0,0,0.8);
 }
-
-/* 6. Anamorphic Lens Flare */
 .fx-flare::after {
     content: ''; position: absolute; top: 40%; left: -50%; width: 200%; height: 2px;
     background: linear-gradient(90deg, transparent, rgba(100, 150, 255, 0.8), #fff, rgba(100, 150, 255, 0.8), transparent);
@@ -145,46 +129,15 @@ body {
     mix-blend-mode: screen; z-index: 5; pointer-events: none; filter: blur(1px);
     transform: rotate(-2deg);
 }
-
-/* 7. Surface Reflection (Glass Floor) */
 .fx-reflection::after {
     content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 50%;
-    background: inherit; /* Requires JS setup to mirror image, or we just fade */
+    background: inherit;
     background-image: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
     transform: scaleY(-1); transform-origin: top; z-index: 0; filter: blur(4px);
 }
-
-/* 8. Micro-Contrast */
 .fx-micro-contrast img.main-img { filter: contrast(1.25) saturate(1.1) brightness(0.95); }
 
-/* 9. Dynamic LUT (applied via inline JS depending on time of day) */
-.lut-warm { filter: sepia(0.3) saturate(1.2) hue-rotate(-10deg); }
-.lut-cool { filter: saturate(0.8) hue-rotate(15deg) contrast(1.1); }
-.lut-night { filter: brightness(0.8) contrast(1.2) hue-rotate(20deg) sepia(0.2); }
-
-/* 10. Ambient Particles (Rendered dynamically in JS as DOM nodes) */
-.particle {
-    position: absolute; background: #fff; border-radius: 50%;
-    pointer-events: none; z-index: 10;
-    opacity: 0; box-shadow: 0 0 5px #fff;
-}
-
-
-/* =======================================
-   TEMPORAL STATES SPECIFIC CLASSES
-   ======================================= */
-
-/* Dialogue State Tilt */
-.state-dialogue-left { transform: perspective(800px) rotateY(5deg) scale(0.95); }
-.state-dialogue-right { transform: perspective(800px) rotateY(-5deg) scale(0.95); }
-
-/* Ellipsis Color Wash */
-.wash-overlay {
-    position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: currentcolor; opacity: 0; z-index: 99; pointer-events: none;
-    transition: opacity 1.5s var(--cinematic-easing);
-}
-
+/* Layers */
 .scene-layer {
     position: absolute;
     inset: 0;
@@ -198,23 +151,33 @@ body {
 
 /* Cinematic Letterboxing */
 .cinematic-bars {
-    position: absolute; width: 100%; height: 8vh; background: #000; z-index: 100;
+    position: absolute; width: 100%; height: clamp(60px, calc(var(--vh, 1vh) * 8), 100px); background: #000; z-index: 100;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .overlay-top { top: 0; }
-.overlay-bottom { bottom: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+.overlay-bottom { 
+    bottom: 0; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    padding: 10px 20px;
+    height: auto;
+    min-height: 12vh;
+}
 
 /* Metadata UI */
 .photo-metadata-layer {
     position: absolute;
-    bottom: 50px;
-    right: 50px;
+    bottom: clamp(100px, calc(var(--vh, 1vh) * 15), 50px);
+    right: clamp(20px, 5%, 50px);
     z-index: 100;
     text-align: right;
     pointer-events: none;
 }
 .date-label {
     font-family: 'Cinzel', serif;
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
     color: white;
     letter-spacing: 5px;
     margin-bottom: 5px;
@@ -239,16 +202,17 @@ body {
 /* Timeline UI */
 .timeline-container {
     width: 90%;
-    margin-bottom: 20px;
+    max-width: 800px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 .timeline-track {
     width: 100%;
-    height: 12px; /* Thicker for touch */
+    height: 10px;
     background: rgba(255,255,255,0.1);
-    border-radius: 6px;
+    border-radius: 5px;
     position: relative;
     cursor: pointer;
 }
@@ -260,58 +224,51 @@ body {
     width: 0%;
     background: var(--gold);
     box-shadow: 0 0 15px var(--gold);
-    border-radius: 6px;
+    border-radius: 5px;
 }
 .time-counter {
     font-family: monospace;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #bbb;
-    margin-top: 8px;
+    margin-top: 5px;
     letter-spacing: 1px;
 }
 
 /* Player Controls */
 .player-controls {
     display: flex;
-    gap: 30px;
+    gap: 15px;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding-bottom: 20px;
+    padding: 10px 0;
 }
 .ctrl-btn {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(212, 175, 55, 0.4);
     color: white;
-    padding: 15px 35px; /* Much larger for mobile */
+    padding: 10px 25px;
     border-radius: 50px;
     cursor: pointer;
     font-family: 'Assistant', sans-serif;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: bold;
     backdrop-filter: blur(15px);
+    white-space: nowrap;
+    transition: all 0.3s ease;
 }
 .ctrl-btn.main-action {
     background: rgba(212, 175, 55, 0.2);
     border-color: var(--gold);
-    min-width: 160px;
+    min-width: 140px;
 }
-.ctrl-btn:hover {
-    background: rgba(212, 175, 55, 0.2);
-    border-color: var(--gold);
-    transform: translateY(-2px);
-}
-.ctrl-btn:active {
-    transform: translateY(0);
-}
+.ctrl-btn:active { transform: scale(0.95); }
 
 /* UI Toggle */
-.screen.hide-ui .cinematic-bars {
-    opacity: 0;
-    pointer-events: none;
-}
+.screen.hide-ui .cinematic-bars,
 .screen.hide-ui .photo-metadata-layer {
     opacity: 0;
+    pointer-events: none;
 }
 
 /* Global Film Grain */
@@ -326,21 +283,48 @@ body {
     50% { transform: translate(-2%, 2%); } 
 }
 
-/* Utility Animations */
-.anim-motion-blur { animation: motionBlurFadeIn 1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards; }
-@keyframes motionBlurFadeIn {
-    0% { filter: blur(20px); transform: translateX(200px) scale(1.1); opacity: 0; }
-    100% { filter: blur(0px); transform: translateX(0) scale(1); opacity: 1; }
+/* Outro */
+#outro { background: #000; }
+
+/* Mobile & Orientation Specifics */
+@media (max-width: 768px) {
+    .main-title { letter-spacing: 2px; }
+    .overlay-bottom { padding: 10px; min-height: 15vh; }
+    .player-controls { gap: 10px; }
+    .ctrl-btn { padding: 10px 20px; font-size: 0.85rem; }
+    .ctrl-btn.main-action { min-width: 120px; }
 }
 
-.anim-zoom-forward { animation: zoomForward 10s linear forwards; }
-@keyframes zoomForward {
-    from { transform: scale(1); } to { transform: scale(1.15); }
+@media (orientation: portrait) {
+    #scene-canvas {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .photo-container {
+        /* Correct centering in portrait without breaking all transforms */
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        max-width: 90vw !important;
+        max-height: 60vh !important;
+        width: auto !important;
+        height: auto !important;
+    }
+    .photo-container img.main-img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
 }
 
-.flashback-ghost {
-    filter: grayscale(100%) blur(5px);
-    opacity: 0.3;
-    z-index: 0;
-    transform: scale(1.05);
+@media (orientation: landscape) and (max-height: 600px) {
+    .cinematic-bars { height: 50px; }
+    .overlay-bottom { min-height: 70px; flex-direction: row; padding: 0 20px; }
+    .player-controls { padding: 0; width: auto; margin-right: 20px; }
+    .timeline-container { margin-bottom: 0; flex: 1; }
+    .main-title { font-size: 2.5rem; }
+    .divider { height: 20px; margin: 10px auto; }
+    .cinematic-title { margin-bottom: 20px; }
+    .photo-metadata-layer { bottom: 80px; }
 }
